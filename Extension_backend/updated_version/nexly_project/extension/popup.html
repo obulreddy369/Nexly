@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexly</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body#nexly-extension-popup {
+        background-color: #f3f4f6;
+        color: #1f2937;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        width: 400px;
+        overflow-x: hidden;
+      }
+      .container { width: 100%; background: #ffffff; }
+      .header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        padding: 20px;
+        text-align: center;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .subtitle {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        margin-top: 6px;
+      }
+      .content { padding: 20px; }
+      .controls {
+        background: #f9fafb;
+        padding: 18px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 18px;
+      }
+      #copyMode {
+        width: 100%;
+        padding: 14px;
+        font-size: 1rem;
+        color: #374151;
+        background: #ffffff;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%236b7280"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 18px;
+        padding-right: 40px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      #copyMode:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+      #captureBtn {
+        width: 100%;
+        margin-top: 16px;
+        padding: 14px 18px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
+      }
+      #captureBtn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(99, 102, 241, 0.35);
+      }
+      button:disabled { opacity: 0.7; cursor: not-allowed; }
+      #status {
+        font-size: 0.9rem;
+        color: #6b7280;
+        text-align: center;
+        margin-top: 14px;
+        min-height: 20px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      #status.success { color: #10b981; }
+      #status.error { color: #ef4444; }
+      #selectedText {
+        width: 100%;
+        padding: 14px;
+        font-size: 0.9rem;
+        color: #374151;
+        background: #ffffff;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        outline: none;
+        resize: vertical;
+        min-height: 150px;
+        transition: all 0.2s ease;
+        font-family: 'SF Mono', Monaco, Consolas, 'Courier New', monospace;
+        line-height: 1.5;
+      }
+      #selectedText:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+      .loading::after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body id="nexly-extension-popup">
+    <div class="container">
+      <div class="header">
+        <h1>Nexly Capture</h1>
+        <div class="subtitle">Simple Content Capture</div>
+      </div>
+      
+      <div class="content">
+        <div class="controls">
+          <select id="copyMode" aria-label="Capture mode">
+            <option value="selection" selected>✂️ Capture Selection</option>
+            <option value="full">🌍 Capture Full Page Text</option>
+          </select>
+          
+          <button id="captureBtn" title="Capture and copy content from the active page">
+            📥 Capture & Copy
+          </button>
+          
+          <div id="status" role="status" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <textarea 
+            id="selectedText" 
+            placeholder="Captured text will appear here..."
+            aria-label="Captured text content"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

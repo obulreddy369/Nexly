@@ -1,2 +1,2 @@
-# Nexly
-Resource management and query platform
+# Nexly_repo
+
