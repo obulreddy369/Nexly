@@ -324,10 +324,10 @@ async function generateTags(selectedText) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer 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'
       },
       body: JSON.stringify({
-        model: 'llama3-8b-8192',
+        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
         messages: [
           { role: 'system', content: 'You are a tag generation expert. Generate 5-10 concise tags based on the provided text. Return tags as a comma-separated string.' },
           { role: 'user', content: `Generate main tags for this content: "${selectedText}"` }
