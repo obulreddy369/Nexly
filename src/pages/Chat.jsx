@@ -160,7 +160,7 @@ export const Chat = () => {
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
   const isMobile = useMediaQuery('(max-width:600px)');
-  const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
+  const groqApiKey = "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";
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -182,17 +182,18 @@ export const Chat = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${groqApiKey}`,
+          'Authorization': 'Bearer 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',
         },
         body: JSON.stringify({
+          model: 'meta-llama/llama-4-scout-17b-16e-instruct',
           messages: updatedMessages.map(({ role, content }) => ({ role, content })),
-          model: 'llama3-8b-8192',
+          max_tokens: 500
         }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error.message || 'An API error occurred.');
+        const errorData = await response.text();
+        throw new Error(errorData || 'An API error occurred.');
       }
 
       const data = await response.json();
